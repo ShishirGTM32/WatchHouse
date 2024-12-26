@@ -1,0 +1,19 @@
+Subject: Order Confirmation - Your Payment was Successful
+
+Dear {{ user.username }},
+
+Thank you for your purchase at WatchHouse! We are pleased to confirm that your payment for Order #{{ order.id }} was successful.
+
+### Order Summary:
+- **Order Number**: {{ order.id }}
+- **Total Amount**: ${{ order.total_price }}
+- **Payment Status**: {{ order.status }}
+
+You can view your order details and track the status by clicking the link below:
+http://{{ domain }}{% url 'payment_success'}
+
+If you have any questions or concerns, feel free to contact us.
+
+Thanks for shopping with us!
+
+The WatchHouse Team

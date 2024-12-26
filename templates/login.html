@@ -1,0 +1,185 @@
+{% load static %}
+
+<head>
+    <title>LogIn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container_base {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .box h3 {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .text-center {
+            font-size: 1rem;
+        }
+
+        .text-primary {
+            color: #007bff;
+        }
+
+        .text-primary:hover {
+            text-decoration: underline;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .text-danger {
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #dc3545;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+</style>
+
+{% include 'navigation.html' %}
+
+<body>
+
+    <div class="container container_base">
+        <div class="box shadow-lg p-4 bg-white w-100">
+            <h3 class="text-center text-primary mb-4">Log In</h3>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="text-danger error-message">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+                <!-- Username Field -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" id="username" class="form-control">
+                    {% if form.username.errors %}
+                    <div class="text-danger error-message">
+                        {% for error in form.username.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                    {% if form.password.errors %}
+                    <div class="text-danger error-message">
+                        {% for error in form.password.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                </div>
+            </form>
+
+            <!-- Forgot Password Link -->
+            <p class="text-center mt-3">
+                <a href="{% url 'password_reset' %}" class="text-primary">Forgot Password?</a>
+            </p>
+
+            <!-- Register Link -->
+            <p class="text-center mt-3">
+                Don't have an account? <a href="{% url 'Register' %}" class="text-primary">Register</a>
+            </p>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ message|escapejs }}',  <!-- Properly escape the message to prevent JS errors -->
+            showConfirmButton: true
+        });
+    </script>
+    {% endfor %}
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

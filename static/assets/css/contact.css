@@ -1,0 +1,76 @@
+/* Contact Details Section */
+.contact-details {
+    background-color: #eaf5e0; /* Light green background */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-details h4 {
+    color: #388e3c; /* Darker green for headings */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.contact-details p {
+    color: #555;
+    font-size: 16px;
+}
+
+.contact-details a {
+    color: #388e3c;
+    text-decoration: none;
+}
+
+.contact-details a:hover {
+    text-decoration: underline;
+}
+
+/* Contact Form Section */
+.contact-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+    font-weight: 700;
+    color: #388e3c;
+    margin-bottom: 20px;
+}
+
+.contact-form .form-control {
+    border-radius: 5px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+}
+
+.contact-form .form-control:focus {
+    border-color: #388e3c;
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.3);
+}
+
+.contact-form .btn-custom {
+    background-color: #388e3c; /* Green button */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.contact-form .btn-custom:hover {
+    background-color: #2e7d32; /* Darker green when hovered */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-details, .contact-form {
+        margin-bottom: 20px;
+    }
+}

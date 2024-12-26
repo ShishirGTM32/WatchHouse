@@ -1,0 +1,89 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Your Cart</title>
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+    {% load custom_filters %}
+
+    {% block content %}
+    <div class="container py-5">
+        <h1 class="h1 text-center mb-4">Your Shopping Cart</h1>
+
+        {% if cart %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart.values %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.image_url }}" alt="{{ item.title }}" class="img-fluid"
+                                style="max-width: 50px; max-height: 50px;">
+                        </td>
+                        <td>{{ item.title }}</td>  <!-- Updated to item.title -->
+                        <td>${{ item.price }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <!-- Decrease Quantity Button -->
+                                <form method="post" action="{% url 'update_quantity' item.watch_id 'decrease' %}" class="me-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+                                </form>
+                                <span>{{ item.quantity }}</span>
+                                <!-- Increase Quantity Button -->
+                                <form method="post" action="{% url 'update_quantity' item.watch_id 'increase' %}" class="ms-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>${{ item.price|multiply:item.quantity }}</td>
+                        <td>
+                            <form method="post" action="{% url 'remove_item' item.watch_id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h3 class="text-right">Total: ${{ total_price|floatformat:2 }}</h3>
+                <div>
+                    <a href="{% url 'clear_cart' %}" class="btn btn-danger">Clear Cart</a>
+                    <a href="{% url 'shop' %}" class="btn btn-secondary ms-3">Continue Shopping</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-success ms-3">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">Your cart is empty.</p>
+        <div class="text-center mt-4">
+            <a href="{% url 'shop' %}" class="btn btn-primary">Go to Shop</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

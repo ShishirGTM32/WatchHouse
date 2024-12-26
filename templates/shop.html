@@ -1,0 +1,137 @@
+{% load static %}
+{% load custom_filters %}
+
+<head>
+    <title>Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'navigation.html' %}
+
+    {% block content %}
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">SHOP</h1>
+                    <p>ALL OF OUR PRODUCTS</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Filters Column -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Filters</h4>
+                            <form method="get" action="{% url 'shop' %}">
+                                <!-- Brand Filter -->
+                                <div class="form-group">
+                                    <label for="brand">Brand</label>
+                                    <select name="brand" id="brand" class="form-control">
+                                        <option value="">All Brands</option>
+                                        {% for brand in brands %}
+                                        <option value="{{ brand.brand_name }}" {% if brand.brand_name == selected_brand %}selected{% endif %}>
+                                            {{ brand.brand_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Gender Filter -->
+                                <div class="form-group mt-3">
+                                    <label for="gender">Gender</label>
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option value="">All Genders</option>
+                                        <option value="Men" {% if request.GET.gender == "Men" %}selected{% endif %}>Men</option>
+                                        <option value="Women" {% if request.GET.gender == "Women" %}selected{% endif %}>Women</option>
+                                        <option value="Unisex" {% if request.GET.gender == "Unisex" %}selected{% endif %}>Unisex</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price Range Filter -->
+                                <div class="form-group mt-3">
+                                    <label for="price_range">Price Range</label>
+                                    <select name="price_range" id="price_range" class="form-control">
+                                        <option value="">All Prices</option>
+                                        <option value="0-50" {% if request.GET.price_range == "0-50" %}selected{% endif %}>$0 - $50</option>
+                                        <option value="51-100" {% if request.GET.price_range == "51-100" %}selected{% endif %}>$51 - $100</option>
+                                        <option value="101-200" {% if request.GET.price_range == "101-200" %}selected{% endif %}>$101 - $200</option>
+                                        <option value="201-500" {% if request.GET.price_range == "201-500" %}selected{% endif %}>$201 - $500</option>
+                                        <option value="500+" {% if request.GET.price_range == "500+" %}selected{% endif %}>$500+</option>
+                                    </select>
+                                </div>
+
+                                <!-- Type Filter -->
+                                <div class="form-group mt-3">
+                                    <label for="type">Type</label>
+                                    <select name="type" id="type" class="form-control">
+                                        <option value="">All Types</option>
+                                        {% for type in types %}
+                                        <option value="{{ type.type_name }}" {% if type.type_name == selected_type %}selected{% endif %}>
+                                            {{ type.type_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Column -->
+                <div class="col-md-9">
+                    <div class="row">
+                        {% for watch in watches %}
+                        <div class="col-12 col-md-4 mb-4">
+                            <div class="card watch-card h-100 img-cont">
+                                <img src="{{ watch.image_url }}" class="card-img-top watch-image" alt="{{ watch.title }}">
+                                <div class="card-body text-center">
+                                    <h5 class="watch-title">{{ watch.title }}</h5>
+                                    <p class="watch-price">Price: ${{ watch.price }}</p>
+                                    <p class="text-muted">
+                                        Brand: {{ watch.brand.brand_name }} <br>
+                                        Gender: {{ watch.gender.gender_name }} <br>
+                                        Type: {{ watch.type.type_name }}
+                                    </p>
+                                    <form method="post" action="{% url 'add_to_cart' watch_id=watch.watch_id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                    <div class="pagination">
+                        <span class="page-links">
+                            {% if page_obj.has_previous %}
+                            <a href="?{% if request.GET %}{{ query_params }}&{% endif %}page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+                            <span class="page-current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            {% if page_obj.has_next %}
+                            <a href="?{% if request.GET %}{{ query_params }}&{% endif %}page={{ page_obj.next_page_number }}">next</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}
+    {% include 'footer.html' %}
+</body>
+
+</html>
