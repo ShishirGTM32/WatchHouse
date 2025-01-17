@@ -3,7 +3,6 @@
 
 WatchHouse is an eCommerce platform for buying watches. The app is made eith the help of python django as backend tool and bootstrap with some css content for the frontend.
 
-**URL:** https://watchhouse.onrender.com
 
 ## About the Project
 
